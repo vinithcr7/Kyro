@@ -1,0 +1,13 @@
+.headerbar{
+    display: flex;
+}
+.admin-action {
+    display: flex;
+    margin-left: auto;
+}
+.admin-menu{
+    display: flex;
+    justify-content: center;
+    padding: 3px;
+    justify-self: end;
+}

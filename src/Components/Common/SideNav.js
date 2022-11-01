@@ -56,7 +56,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-const SideNav = ({ sideNavSchema }) => {
+const SideNav = ({ sideNavSchema, children }) => {
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerToggle = (open) => {
@@ -133,6 +133,9 @@ const SideNav = ({ sideNavSchema }) => {
                     </ListItemButton>
                 </ListItem>
             </Drawer>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                {children}
+            </Box>
         </Box>
     );
 }

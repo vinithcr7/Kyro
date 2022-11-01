@@ -1,10 +1,15 @@
 import './App.css';
 import SideNav from './Components/Common/SideNav';
-import { sideNavSchema } from './Schema/SideNavSchema'
+import { sideNavSchema } from './Schema/SideNavSchema';
+import Header from './Components/Header/Header';
 
 function App() {
   return (
-    <SideNav sideNavSchema={sideNavSchema} />
+    <div>
+      <SideNav sideNavSchema={sideNavSchema}>
+        <Header userName={'vinith'} />
+      </SideNav>
+    </div>
   );
 }
 
