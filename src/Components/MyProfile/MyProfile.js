@@ -4,8 +4,9 @@ import { MyProfileSchema } from '../../Schema/MyProfileSchema';
 import ButtonComp from '../Common/ButtonComp';
 import '../../Styles/MyProfile.css';
 import { useEffect, useReducer } from "react";
-import { mergeArray } from '../../Utils/util'
+import { mergeArray, checkStatus, pareJSON } from '../../Utils/util'
 import { constants } from './Constants';
+
 const myProfileReducer = (state, action) => {
     switch (action.type) {
         case constants.UPDATE_PROFILE_CONFIG:
@@ -13,63 +14,60 @@ const myProfileReducer = (state, action) => {
                 ...state,
                 myProfileConfig: action.myProfileConfig
             }
-            break;
+        case constants.UPDATE_TEMP_CONFIG:
+            return {
+                ...state,
+                tempConfig: action.tempConfig
+            }
         default:
             return state
     }
 }
 
 const initialState = {
-    myProfileConfig: []
+    myProfileConfig: [],
+    tempConfig: []
 }
 
 
 const MyProfile = () => {
 
     const [profile, dispatch] = useReducer(myProfileReducer, initialState);
-
-
     const onChange = (event) => {
         let updatedProfileConfig = profile.myProfileConfig.map(config => {
             if (config.id === event.target.id) {
-                config.value = event.target.value;
+                return {
+                    ...config,
+                    value: event.target.value
+                }
             }
             return config;
         })
-        dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: updatedProfileConfig })
+        dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: updatedProfileConfig });
     }
 
     const eventHandler = {
         onChange: onChange
     }
 
+    const resetProfile = () => {
+        dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: profile.tempConfig })
+    }
+
     useEffect(() => {
         const getProfileData = async () => {
-            let profileData = [
-                {
-                    id: "firstName",
-                    value: "Vinith"
-                },
-                {
-                    id: "lastName",
-                    value: "Karthik"
-                },
-                {
-                    id: "email",
-                    value: "vinith@gmail.com"
-                },
-                {
-                    id: "phoneNumber",
-                    value: "9876543221"
-                },
-                {
-                    id: "location",
-                    value: "Chennai"
-                }
-            ]
-            let schema = [...MyProfileSchema];
-            let myProfileConfig = mergeArray(schema, profileData);
-            dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: myProfileConfig })
+            try {
+                let response = await fetch('http://localhost:3001/userinfo');
+                response = checkStatus(response);
+                response = await pareJSON(response);
+                let profileData = response[0].data;
+                let schema = [...MyProfileSchema];
+                let myProfileConfig = mergeArray(schema, profileData);
+                dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: myProfileConfig })
+                dispatch({ type: constants.UPDATE_TEMP_CONFIG, tempConfig: myProfileConfig })
+            } catch (err) {
+
+            }
         }
         getProfileData()
     }, [])
@@ -90,7 +88,7 @@ const MyProfile = () => {
                         }
                     </Grid>
                     <div className="profile-footer">
-                        <ButtonComp label={"Reset"} className="reset-btn" />
+                        <ButtonComp label={"Reset"} className="reset-btn" onClick={resetProfile} />
                         <ButtonComp label={"Save"} />
                     </div>
                 </div>
