@@ -36,7 +36,7 @@ const Menuitem = ({ userName, menuItems, onMenuSelect }) => {
             >
                 {
                     menuItems.map((item) => {
-                        return <MenuItem onClick={() => handleClose(item.id)}>{item.label}</MenuItem>
+                        return <MenuItem key={item.id} onClick={() => handleClose(item.id)}>{item.label}</MenuItem>
                     })
                 }
             </Menu>
