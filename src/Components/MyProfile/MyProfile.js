@@ -46,7 +46,7 @@ const MyProfile = () => {
 
     const updateProfile = async (payload) => {
         try {
-            let response = await fetch(`http://localhost:3001/userinfo/${profile.userId}`, {
+            let response = await fetch(`https://kyro-poc.herokuapp.com/userinfo/${profile.userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const MyProfile = () => {
     useEffect(() => {
         const getProfileData = async () => {
             try {
-                let response = await fetch('http://localhost:3001/userinfo');
+                let response = await fetch('https://kyro-poc.herokuapp.com/userinfo');
                 response = checkStatus(response);
                 response = await pareJSON(response);
                 let profileData = response[0].data;
