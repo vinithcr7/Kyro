@@ -4,17 +4,20 @@ import AddIcon from '@mui/icons-material/Add';
 import { Avatar } from "@mui/material";
 import Menuitem from "../Common/Menuitem";
 import { MenuSchema } from "../../Schema/MenuSchema";
+import { useContext } from 'react';
+import { profileContext } from '../../Contexts/ProfileContext'
 import '../../Styles/Header.css';
 
-const Header = ({ userName }) => {
+const Header = () => {
+    const { profile, dispatchProfile } = useContext(profileContext);
     return (
         <div className="headerbar">
-            <Greeting userName={userName} />
+            <Greeting userName={profile.displayName} />
             <div className="admin-action">
                 <ButtonComp label={"Add Project"} startIcon={<AddIcon />} />
                 <div className="admin-menu">
                     <Avatar sx={{ bgcolor: "blue", borderRadius: '10px' }} variant="square">N</Avatar>
-                    <Menuitem userName={userName} menuItems={MenuSchema} />
+                    <Menuitem userName={profile.displayName} menuItems={MenuSchema} />
                 </div>
             </div>
         </div>

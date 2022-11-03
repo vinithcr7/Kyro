@@ -3,41 +3,14 @@ import { getComponent } from '../../Utils/ComponentsMapping';
 import { MyProfileSchema } from '../../Schema/MyProfileSchema';
 import ButtonComp from '../Common/ButtonComp';
 import '../../Styles/MyProfile.css';
-import { useEffect, useReducer } from "react";
+import { useEffect, useContext } from "react";
 import { mergeArray, checkStatus, pareJSON } from '../../Utils/util'
 import { constants } from './Constants';
-
-const myProfileReducer = (state, action) => {
-    switch (action.type) {
-        case constants.UPDATE_PROFILE_CONFIG:
-            return {
-                ...state,
-                myProfileConfig: action.myProfileConfig
-            }
-        case constants.UPDATE_TEMP_CONFIG:
-            return {
-                ...state,
-                tempConfig: action.tempConfig
-            }
-        case constants.USER_ID:
-            return {
-                ...state,
-                userId: action.userId
-            }
-        default:
-            return state
-    }
-}
-
-const initialState = {
-    myProfileConfig: [],
-    tempConfig: []
-}
-
+import { profileContext } from '../../Contexts/ProfileContext';
 
 const MyProfile = () => {
+    const { profile, dispatchProfile } = useContext(profileContext);
 
-    const [profile, dispatch] = useReducer(myProfileReducer, initialState);
     const onChange = (event) => {
         let updatedProfileConfig = profile.myProfileConfig.map(config => {
             if (config.id === event.target.id) {
@@ -48,7 +21,7 @@ const MyProfile = () => {
             }
             return config;
         })
-        dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: updatedProfileConfig });
+        dispatchProfile({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: updatedProfileConfig });
     }
 
     const eventHandler = {
@@ -56,7 +29,7 @@ const MyProfile = () => {
     }
 
     const resetProfile = () => {
-        dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: profile.tempConfig })
+        dispatchProfile({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: profile.tempConfig })
     }
 
     const saveChanges = async () => {
@@ -82,10 +55,14 @@ const MyProfile = () => {
             });
             response = checkStatus(response);
             response = await pareJSON(response);
+            dispatchProfile({ type: constants.UPDATE_TEMP_CONFIG, tempConfig: profile.myProfileConfig });
+            let firstNameObj = payload.data.find(data => data.id === 'firstName');
+            if (firstNameObj) {
+                dispatchProfile({ type: constants.DISPLAY_NAME, displayName: firstNameObj.value })
+            }
         } catch (err) {
 
         }
-        console.log(payload);
     }
 
     useEffect(() => {
@@ -95,11 +72,13 @@ const MyProfile = () => {
                 response = checkStatus(response);
                 response = await pareJSON(response);
                 let profileData = response[0].data;
+                let displayName = profileData.find(data => data.id === 'firstName');
                 let schema = [...MyProfileSchema];
                 let myProfileConfig = mergeArray(schema, profileData);
-                dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: myProfileConfig })
-                dispatch({ type: constants.UPDATE_TEMP_CONFIG, tempConfig: myProfileConfig })
-                dispatch({ type: constants.USER_ID, userId: response[0]._id })
+                dispatchProfile({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: myProfileConfig })
+                dispatchProfile({ type: constants.UPDATE_TEMP_CONFIG, tempConfig: myProfileConfig })
+                dispatchProfile({ type: constants.DISPLAY_NAME, displayName: displayName.value })
+                dispatchProfile({ type: constants.USER_ID, userId: response[0]._id })
             } catch (err) {
 
             }
