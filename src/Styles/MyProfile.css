@@ -1,9 +1,10 @@
 .profile-detailview {
     box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
     border-radius: 15px;
-    margin-top: 10px;
-    padding: 10px;
-    min-height: 400px;
+    margin-top: 3vh;
+    padding: 3vh;
+    min-height: 70vh;
+    position: relative;
 }
 
 .profile-container {
@@ -21,10 +22,12 @@
 }
 
 .profile-container .profile-detailview-container .profile-footer {
-    display: flex;
-    justify-content: center;
+    bottom: 5vh;
+    position: absolute;
+    left: calc(50% - 75px);
+    width: 150px;
 }
 
 .profile-container .profile-detailview-container .profile-footer .reset-btn {
-    margin-right: 10px;
+    margin-right: 3vh;
 }

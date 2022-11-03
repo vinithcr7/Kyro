@@ -9,6 +9,6 @@
 .admin-action  .admin-menu{
     display: flex;
     justify-content: center;
-    padding: 3px;
-    margin-left: 8px;
+    padding: 1vh;
+    margin-left: 2vh;
 }
