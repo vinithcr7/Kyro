@@ -19,6 +19,11 @@ const myProfileReducer = (state, action) => {
                 ...state,
                 tempConfig: action.tempConfig
             }
+        case constants.USER_ID:
+            return {
+                ...state,
+                userId: action.userId
+            }
         default:
             return state
     }
@@ -54,6 +59,35 @@ const MyProfile = () => {
         dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: profile.tempConfig })
     }
 
+    const saveChanges = async () => {
+        let payload = {}, changedDataArr = [];
+        profile.myProfileConfig.forEach((attr) => {
+            let existingAttr = profile.tempConfig.find(tempAttr => tempAttr.id === attr.id);
+            if (existingAttr && existingAttr.value !== attr.value) {
+                changedDataArr.push({ id: attr.id, value: attr.value })
+            }
+        })
+        payload.data = changedDataArr;
+        updateProfile(payload);
+    }
+
+    const updateProfile = async (payload) => {
+        try {
+            let response = await fetch(`http://localhost:3001/userinfo/${profile.userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+            response = checkStatus(response);
+            response = await pareJSON(response);
+        } catch (err) {
+
+        }
+        console.log(payload);
+    }
+
     useEffect(() => {
         const getProfileData = async () => {
             try {
@@ -65,6 +99,7 @@ const MyProfile = () => {
                 let myProfileConfig = mergeArray(schema, profileData);
                 dispatch({ type: constants.UPDATE_PROFILE_CONFIG, myProfileConfig: myProfileConfig })
                 dispatch({ type: constants.UPDATE_TEMP_CONFIG, tempConfig: myProfileConfig })
+                dispatch({ type: constants.USER_ID, userId: response[0]._id })
             } catch (err) {
 
             }
@@ -89,7 +124,7 @@ const MyProfile = () => {
                     </Grid>
                     <div className="profile-footer">
                         <ButtonComp label={"Reset"} className="reset-btn" onClick={resetProfile} />
-                        <ButtonComp label={"Save"} />
+                        <ButtonComp label={"Save"} onClick={saveChanges} />
                     </div>
                 </div>
             </div>

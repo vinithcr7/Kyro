@@ -11,7 +11,7 @@ const Greeting = ({ userName }) => {
     }
     return (
         <div className="greeting-container">
-            <span>{`Good ${session},${userName}`}</span>
+            <b>{`Good ${session},${userName}`}</b>
             <span>{date.toLocaleString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}</span>
         </div>
     )

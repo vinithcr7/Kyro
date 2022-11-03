@@ -3,11 +3,12 @@
 }
 .admin-action {
     display: flex;
+    align-items: center;
     margin-left: auto;
 }
-.admin-menu{
+.admin-action  .admin-menu{
     display: flex;
     justify-content: center;
     padding: 3px;
-    justify-self: end;
+    margin-left: 8px;
 }
