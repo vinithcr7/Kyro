@@ -4,7 +4,7 @@ import { MyProfileSchema } from '../../Schema/MyProfileSchema';
 import ButtonComp from '../Common/ButtonComp';
 import '../../Styles/MyProfile.css';
 import { useEffect, useContext } from "react";
-import { mergeArray, checkStatus, pareJSON } from '../../Utils/util'
+import { mergeArray, checkStatus, pareJSON, req } from '../../Utils/util'
 import { constants } from './Constants';
 import { profileContext } from '../../Contexts/ProfileContext';
 
@@ -46,19 +46,21 @@ const MyProfile = () => {
 
     const updateProfile = async (payload) => {
         try {
-            let response = await fetch(`https://kyro-poc.herokuapp.com/userinfo/${profile.userId}`, {
+            let response = await req({
+                url: `http://localhost:3001/userinfo/${profile.userId}`,
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
+                payload: payload
             });
             response = checkStatus(response);
             response = await pareJSON(response);
-            dispatchProfile({ type: constants.UPDATE_TEMP_CONFIG, tempConfig: profile.myProfileConfig });
-            let firstNameObj = payload.data.find(data => data.id === 'firstName');
-            if (firstNameObj) {
-                dispatchProfile({ type: constants.DISPLAY_NAME, displayName: firstNameObj.value })
+            if(response.status === 'success') {
+                dispatchProfile({ type: constants.UPDATE_TEMP_CONFIG, tempConfig: profile.myProfileConfig });
+                let firstNameObj = payload.data.find(data => data.id === 'firstName');
+                if (firstNameObj) {
+                    dispatchProfile({ type: constants.DISPLAY_NAME, displayName: firstNameObj.value })
+                }
+            } else {
+                throw new Error();
             }
         } catch (err) {
 
@@ -68,9 +70,10 @@ const MyProfile = () => {
     useEffect(() => {
         const getProfileData = async () => {
             try {
-                let response = await fetch('https://kyro-poc.herokuapp.com/userinfo');
-                response = checkStatus(response);
-                response = await pareJSON(response);
+                let response = await req({
+                    url: 'http://localhost:3001/userinfo',
+                    method: 'GET'
+                });
                 let profileData = response[0].data;
                 let displayName = profileData.find(data => data.id === 'firstName');
                 let schema = [...MyProfileSchema];

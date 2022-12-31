@@ -22,3 +22,19 @@ export const checkStatus = (response) => {
 export const pareJSON = async (response) => {
     return await response.json();
 }
+
+export const req = async ({url, method, payload}) => {
+    let reqObj = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    if(payload) {
+        reqObj.body = JSON.stringify(payload); 
+    }
+    let response = await fetch(url, reqObj);
+    response = checkStatus(response);
+    response = await pareJSON(response);
+    return response;
+}
