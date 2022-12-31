@@ -7,27 +7,13 @@
     position: relative;
 }
 
-.profile-container {
-    display: flex;
-}
-
-.profile-container .profile-display-container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-}
-
-.profile-container .profile-detailview-container {
-    flex: 2;
-}
-
-.profile-container .profile-detailview-container .profile-footer {
+.profile-footer {
     bottom: 5vh;
     position: absolute;
     left: calc(50% - 75px);
     width: 150px;
 }
 
-.profile-container .profile-detailview-container .profile-footer .reset-btn {
+.profile-footer .reset-btn {
     margin-right: 3vh;
 }

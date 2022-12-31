@@ -89,15 +89,15 @@ const MyProfile = () => {
         getProfileData()
     }, [])
     return (
-        <div className="profile-container">
-            <div className="profile-detailview-container">
+        <Grid container justifyContent="center" alignItems="center">
+            <Grid item xs={12} md={8}>
                 My Profile
                 <div className="profile-detailview">
                     <Grid container spacing={2}>
                         {
                             profile.myProfileConfig.map((attribute) => {
                                 return (
-                                    <Grid key={attribute.id} item xs={6} md={6}>
+                                    <Grid key={attribute.id} item xs={12} md={6}>
                                         {getComponent(attribute, eventHandler)}
                                     </Grid>
                                 )
@@ -109,8 +109,8 @@ const MyProfile = () => {
                         <ButtonComp label={"Save"} onClick={saveChanges} />
                     </div>
                 </div>
-            </div>
-            <div className="profile-display-container">
+            </Grid>
+            <Grid item xs={12} md={4}>
                 <Grid container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     {
                         profile.myProfileConfig.map((attribute) => {
@@ -122,8 +122,8 @@ const MyProfile = () => {
                         })
                     }
                 </Grid>
-            </div>
-        </div>
+            </Grid>
+        </Grid>
     )
 }
 

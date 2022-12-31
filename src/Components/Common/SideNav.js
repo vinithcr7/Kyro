@@ -5,7 +5,6 @@ import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItem from '@mui/material/ListItem';
@@ -84,7 +83,7 @@ const SideNav = ({ sideNavSchema, children }) => {
                         </IconButton>
                     </Grid>
                     {open && <Grid item>
-                        <Typography variant='h5' sx={{ justifyContent: 'center' }}>KYRO</Typography>
+                        <Typography variant='h5' sx={{ justifyContent: 'center' }}>VINK</Typography>
                     </Grid>}
                 </Grid>
                 <List>
