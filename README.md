@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Vink
+Project management App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ ## Tech and library stack
+ React, MaterialUI, Context API, Hooks, webpack, babel
 
 ## Available Scripts
 
