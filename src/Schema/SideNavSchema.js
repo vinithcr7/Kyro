@@ -7,7 +7,7 @@ export const sideNavSchema = [
     {
         id: "projects",
         label: "Projects",
-        icon: "homeIcon"
+        icon: "projectsIcon"
     },
     {
         id: "dashboard",
@@ -23,16 +23,16 @@ export const sideNavSchema = [
     {
         id: "documents",
         label: "Documents",
-        icon: "homeIcon"
+        icon: "documentIcon"
     },
     {
         id: "organizations",
         label: "Organizations",
-        icon: "homeIcon"
+        icon: "organizationIcon"
     },
     {
         id: "settings",
         label: "Settings",
-        icon: "homeIcon"
+        icon: "settingsIcon"
     }
 ];

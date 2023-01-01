@@ -13,6 +13,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Avatar, Grid } from '@mui/material';
 import { iconsMapping } from '../../Utils/IconsMapping';
+import { Link } from 'react-router-dom';
 
 
 const drawerWidth = 240;
@@ -89,25 +90,26 @@ const SideNav = ({ sideNavSchema, children }) => {
                 <List>
                     {sideNavSchema.map((sideNavElement) => (
                         <ListItem key={sideNavElement.id} disablePadding sx={{ display: 'block' }}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
+                                <ListItemButton
+                                    component={Link} to={`/${sideNavElement.id}`}
                                     sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
                                     }}
                                 >
-                                    {iconsMapping[sideNavElement.icon]}
-                                </ListItemIcon>
-                                <ListItemText primary={sideNavElement.label} sx={{ opacity: open ? 1 : 0 }} />
-                                {sideNavElement.alertCount && <Avatar sx={{ width: 17, height: 17, fontSize: 15, bgcolor: 'red', display: open ? 'inherit' : 'none' }}>{sideNavElement.alertCount}</Avatar>}
-                            </ListItemButton>
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        {iconsMapping[sideNavElement.icon]}
+                                    </ListItemIcon>
+                                    <ListItemText primary={sideNavElement.label} sx={{ opacity: open ? 1 : 0 }} />
+                                    {sideNavElement.alertCount && <Avatar sx={{ width: 17, height: 17, fontSize: 15, bgcolor: 'red', display: open ? 'inherit' : 'none' }}>{sideNavElement.alertCount}</Avatar>}
+                                </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
